@@ -17,6 +17,8 @@
  * Define Global Variables
  *
  */
+const sectionCollection = document.querySelectorAll("section");
+const getNav = document.getElementById("navbar__list");
 
 /**
  * End Global Variables
@@ -31,64 +33,50 @@
  */
 
 // build the nav
-const sectionCollection = document.querySelectorAll("section");
-const getNav = document.getElementById("navbar__list");
 
-const nav_items = sectionCollection.forEach(function (userItem) {
-  console.log(userItem.dataset.nav);
+const nav_items = sectionCollection.forEach(function (navItem) {
+  console.log(navItem.dataset.nav);
   navLi = document.createElement("li");
-  navLi.className = "navLi active";
+  navLi.className = "navLi";
   navA = document.createElement("a");
-  linkText = document.createTextNode(userItem.dataset.nav);
+  linkText = document.createTextNode(navItem.dataset.nav);
   navA.appendChild(linkText);
-  navA.href = `#${userItem.id}`;
+  navA.href = `#${navItem.id}`;
   navLi.appendChild(navA);
   getNav.appendChild(navLi);
 });
 
+// Add class 'active' to section when near top of viewport
+// make section active
+
 function makeActive() {
-  for (const section of sections) {
-    const box = section.getBoundingClientRect();
-    if (box.top <= 150 && box.bottom >= 150) {
-      console.log("Active");
+  for (let i = 0; i < sectionCollection.length; i++) {
+    let getNavLi = document.getElementsByClassName("navLi");
+    let box = sectionCollection[i].getBoundingClientRect();
+
+    if (box.top <= 100 && box.bottom >= 100) {
+      getNavLi[i].classList.add("active");
+      sectionCollection[i].classList.add("your-active-class");
     } else {
-      // Your logic to remove active classes
-      console.log("passive");
+      getNavLi[i].classList.remove("active");
+      sectionCollection[i].classList.remove("your-active-class");
     }
   }
 }
 
-function isElementInViewport(el) {
-  // Special bonus for those using jQuery
-  if (typeof jQuery === "function" && el instanceof jQuery) {
-    el = el[0];
-  }
-
-  var rect = el.getBoundingClientRect();
-
-  return (
-    rect.top >= 0 &&
-    rect.left >= 0 &&
-    rect.bottom <=
-      (window.innerHeight ||
-        document.documentElement.clientHeight) /* or $(window).height() */ &&
-    rect.right <=
-      (window.innerWidth ||
-        document.documentElement.clientWidth) /* or $(window).width() */
-  );
-}
-// Add class 'active' to section when near top of viewport
-
-// Scroll to anchor ID using scrollTO event
-
+// Scroll to anchor ID using scrollTO event - smooth scroll setup in HTML for the entire doc
+document.addEventListener("scroll", function () {
+  makeActive();
+  console.log("t");
+});
 /**
  * End Main Functions
  * Begin Events
  *
  */
 
-// Build menu
+// DONE -Build menu
 
-// Scroll to section on link click
+// DONE - Scroll to section on link click
 
 // Set sections as active
